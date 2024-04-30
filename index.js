@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 
 mongoose
-  .connect("mongodb+srv://admin:admin@backend-db.3inmkeb.mongodb.net/")
+  .connect("mongodb+srv://admin:admin@backend-db.3inmkeb.mongodb.net/test")
   .then(() => {
     console.log("db is connected");
     app.listen(3000, () => {
