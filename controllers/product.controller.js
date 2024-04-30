@@ -1,9 +1,23 @@
 const Product = require("../models/product.model");
 
 const getProducts = async (req, res) => {
+  const pageNo = Number(req.query.pageNo || 1);
+  const pageSize = Number(req.query.pageSize || 10);
   try {
-    const products = await Product.find({}).sort({ createdAt: -1 });
-    res.status(200).json(products);
+    const totalCount = await Product.countDocuments();
+    const products = await Product.find({})
+      .sort({ createdAt: -1 })
+      .skip((pageNo - 1) * pageSize)
+      .limit(pageSize);
+
+    res.status(200).json({
+      data: products,
+      meta: {
+        pageNo: pageNo,
+        pageSize: pageSize,
+        total: totalCount,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
